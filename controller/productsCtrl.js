@@ -26,8 +26,8 @@ const createProducts = asyncHandler(async (req, res) => {
 
 const getAllProducts = asyncHandler(async (req, res) => {
     try {
-        const getUsers = await Products.find();
-        res.json({ products: getUsers });
+        const getProduct = await Products.find();
+        res.json({ products: getProduct });
     } catch (error) {
         throw new Error(error);
     }

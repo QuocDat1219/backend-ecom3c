@@ -6,14 +6,14 @@ const {
     getAllProducts,
     getaProducts,
     updateProducts,
-    deleteProducts
+    deleteProducts,
 
 } = require("../controller/productsCtrl");
 
 const router = express.Router();
 
 router.post("/", authMiddleware, isAdmin, createProducts);
-router.get("/getallproducts", getAllProducts);
+router.get("/", getAllProducts);
 router.get("/:id", getaProducts);
 router.put("/:id", authMiddleware, isAdmin, updateProducts);
 router.delete("/:id", authMiddleware, isAdmin, deleteProducts);

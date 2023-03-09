@@ -42,8 +42,26 @@ const deleteCategory = asyncHandler(async (req, res) => {
 
 });
 
+const getAllCategory = asyncHandler(async (req, res) => {
+    try {
+        const getCategory = await Category.find();
+        res.json({ category: getCategory });
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const getaCategory = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const findCategory = await Category.findById({_id : id});
+        res.json({ category: findCategory });
+    } catch (error) {
+        throw new Error(error);
+    }
+});
 
 
 
-
-module.exports = { createCategory, updateCategory, deleteCategory }
+module.exports = { createCategory, updateCategory, deleteCategory ,getAllCategory,getaCategory}

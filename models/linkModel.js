@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
 
-const linkSchema = new Schema(
+const linkSchema = new mongoose.Schema(
     {
-        _id: {
-            type: String,
-            required: true,
-            unique: true
-        },
+        
         name: {
             type: String,
             required: true,
@@ -21,4 +17,4 @@ const linkSchema = new Schema(
     }
 })
 
-module.exports = mongoose.Schema("link",linkSchema)
+module.exports = mongoose.model("link",linkSchema)

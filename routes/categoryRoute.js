@@ -4,11 +4,14 @@ const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const {
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getAllCategory,
+    getaCategory
 } = require("../controller/categoryCtrl");
 
 router.post("/", authMiddleware, isAdmin, createCategory);
 router.put("/:id", authMiddleware,isAdmin, updateCategory);
 router.delete("/:id", authMiddleware,isAdmin, deleteCategory);
-
+router.get("/", getAllCategory);
+router.get("/:id", getaCategory);
 module.exports = router;
