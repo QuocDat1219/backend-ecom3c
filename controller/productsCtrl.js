@@ -46,13 +46,12 @@ const getaProducts = asyncHandler(async (req, res) => {
 });
 
 const updateProducts = asyncHandler(async (req, res) => {
-    const id = req.params;
-
+    const {id} = req.params;
     try {
         if (req.body.name) {
             req.body.slug = slugify(req.body.name);
         }
-        const updateProduct = await Products.findOneAndUpdate({ id }, req.body, {
+        const updateProduct = await Products.findOneAndUpdate({ _id: id }, req.body, {
             new: true,
         });
         res.json({ status: "Update Success", product: updateProduct });

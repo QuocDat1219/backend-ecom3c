@@ -40,11 +40,11 @@ var productsSchema = new mongoose.Schema(
                 url: String,
             },
         ],
-        imagesDefault: [
-            {
-                url: String,
-            },
-        ],
+        
+        imagesDefault: {
+            type: String,
+        },
+
         guarante: {
             type: String,
         }
