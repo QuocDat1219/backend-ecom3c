@@ -24,7 +24,7 @@ var productsSchema = new mongoose.Schema(
             type: Number,
         },
         idCategory: {
-            type: String,
+            type: Number,
             required: true,
         },
         slug: {
