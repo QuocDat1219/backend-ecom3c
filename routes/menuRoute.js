@@ -9,7 +9,7 @@ const {
     deleteMenu
 } = require("../controller/menuCtrl")
 
-router.post("/",authMiddleware,isAdmin,CreateMenu);
+router.post("/",isAdmin,CreateMenu);
 router.get("/",getAllMenu);
 router.get("/:id",getaMenu);
 router.put("/:id",authMiddleware,isAdmin,updateMenu);
