@@ -1,21 +1,24 @@
 const mongoose = require("mongoose");
 
 const InfoWebSchema = mongoose.Schema({
-    nameweb:{
+    nameweb: {
         type: String,
     },
-    address:{
+    address: {
         type: String,
     },
-    nameadmin:{
-        type:String,
-    },
-    hotline:{
+    nameadmin: {
         type: String,
     },
-    taxcode:{
+    hotline: {
         type: String,
-    }
+    },
+    taxcode: {
+        type: String,
+    },
+    pagefbid: {
+        type: String,
+    },
 })
 
-module.exports = mongoose.model("InfoWeb",InfoWebSchema)
+module.exports = mongoose.model("InfoWeb", InfoWebSchema)
