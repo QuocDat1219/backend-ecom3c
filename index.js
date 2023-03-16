@@ -19,7 +19,7 @@ const uploadRouter = require("./routes/uploadRoute");
 const productsRouter = require("./routes/productsRoute");
 const linkRouter = require("./routes/linkRoute");
 const menuRouter = require("./routes/menuRoute");
-
+const infoRouter = require("./routes/infoWebRoute")
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -44,6 +44,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/links", linkRouter);
 app.use("/api/menu",menuRouter)
+app.use("/api/info",infoRouter)
 
 app.use(notFound);
 app.use(errorHandler);
