@@ -5,11 +5,9 @@ const linkSchema = new mongoose.Schema(
         
         name: {
             type: String,
-            required: true,
         },
         url: {
-            type: String,
-            required: true,
+            type: String,       
         }
     }, {
     timestamps: {

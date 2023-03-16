@@ -8,8 +8,7 @@ const MenuSchema = new mongoose.Schema({
         trim: true,
     },
     doc: {
-        type: String,
-        required: true,
+        type: Object,
     },
     slug: {
         type: String,
