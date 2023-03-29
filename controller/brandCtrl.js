@@ -17,7 +17,8 @@ const updateBrand = asyncHandler(async (req, res) => {
     const updatedBrand = await Brand.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updatedBrand);
+    res.json({status : "Update Success" ,Brand : updatedBrand});
+
   } catch (error) {
     throw new Error(error);
   }
@@ -27,7 +28,7 @@ const deleteBrand = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const deletedBrand = await Brand.findByIdAndDelete(id);
-    res.json(deletedBrand);
+    res.json({status : "Delete Success" ,Brand : deletedBrand});
   } catch (error) {
     throw new Error(error);
   }

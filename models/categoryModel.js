@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
-
-autoIncrement.initialize(mongoose.connection);
 
 var categorySchema = new mongoose.Schema(
     {
-        _id: {
-            type: String,
-            unique: true,
-            required: true
-        },
+
         name: {
             type: String,
             required: true,
@@ -22,13 +15,5 @@ var categorySchema = new mongoose.Schema(
     }
 
 );
-
-
-categorySchema.plugin(autoIncrement.plugin, {
-    model: 'category',
-    field: '_id',
-    startAt: 1,
-    incrementBy: 1
-});
 
 module.exports = mongoose.model('category', categorySchema);

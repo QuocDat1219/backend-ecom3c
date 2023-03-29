@@ -45,9 +45,7 @@ var productsSchema = new mongoose.Schema(
             type: String,
         },
 
-        guarante: {
-            type: String,
-        }
+       
 
     }, {
     timestamps: {
