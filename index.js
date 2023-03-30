@@ -6,7 +6,7 @@ const app = express();
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT;
 const authRouter = require("./routes/authRoute");
-const productRouter = require("./routes/productRoute");
+
 const blogRouter = require("./routes/blogRoute");
 // const categoryRouter = require("./routes/prodcategoryRoute");
 const categoryRouter = require("./routes/categoryRoute");
@@ -20,6 +20,7 @@ const productsRouter = require("./routes/productsRoute");
 const linkRouter = require("./routes/linkRoute");
 const menuRouter = require("./routes/menuRoute");
 const infoRouter = require("./routes/infoWebRoute")
+const categoryContainerRouter = require("./routes/categoryContainerRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -31,7 +32,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/api/user", authRouter);
-app.use("/api/product", productRouter);
 app.use("/api/blog", blogRouter);
 // app.use("/api/category", categoryRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
@@ -43,8 +43,9 @@ app.use("/api/upload", uploadRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/links", linkRouter);
-app.use("/api/menu",menuRouter)
-app.use("/api/info",infoRouter)
+app.use("/api/menu",menuRouter);
+app.use("/api/info",infoRouter);
+app.use ("/api/categorycontainer", categoryContainerRouter);
 
 app.use(notFound);
 app.use(errorHandler);
