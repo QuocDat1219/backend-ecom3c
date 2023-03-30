@@ -24,11 +24,17 @@ var productsSchema = new mongoose.Schema(
             type: Number,
         },
         idCategory: {
-            type: Number,
+            type: String,
+            required: true,
+        },
+        idContainerCategory: {
+            type: String,
             required: true,
         },
         slug: {
             type: String,
+            required: true,
+            unique: true,
             lowercase: true,
         },
         sold: {
@@ -37,19 +43,20 @@ var productsSchema = new mongoose.Schema(
         },
         imagesDetail: [
             {
-                url: String,
+                original:String,
+                thumbnail: String,
             },
         ],
-        
+
         imagesDefault: {
             type: String,
         },
 
-       
+
 
     }, {
     timestamps: {
-        currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)   
+        currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)
     }
 }
 );

@@ -14,9 +14,10 @@ const createCategory = asyncHandler(async (req, res) => {
 
 const updateCategory = asyncHandler(async (req, res) => {
 
-    const id = res.params;
+    const { id } = req.params;
+    console.log(id);
     try {
-        const updateCategory = await Category.findOneAndUpdate({ id }, req.body, { new: true });
+        const updateCategory = await Category.findOneAndUpdate({ _id : id }, req.body, { new: true });
         res.json({ status: 'Update Success', category: updateCategory })
     } catch (error) {
         throw new Error(error);
