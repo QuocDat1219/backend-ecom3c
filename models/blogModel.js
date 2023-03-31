@@ -15,11 +15,14 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    images: [
+    imagesDetail: [
       {
         url: String
       }
     ],
+    imageThumbnail: {
+      type : String 
+    },
     video: {
       type: String
     }
