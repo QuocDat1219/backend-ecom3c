@@ -7,13 +7,13 @@ const {
     getaProducts,
     updateProducts,
     deleteProducts,
-
+    getAllProductsPage
 } = require("../controller/productsCtrl");
 
 const router = express.Router();
 
 router.post("/", authMiddleware, isAdmin, createProducts);
-router.get("/", getAllProducts);
+router.get("/", getAllProductsPage);
 router.get("/:id", getaProducts);
 router.put("/:id", authMiddleware, isAdmin, updateProducts);
 router.delete("/:id", authMiddleware, isAdmin, deleteProducts);

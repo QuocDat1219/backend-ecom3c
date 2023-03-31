@@ -46,7 +46,7 @@ const getaProducts = asyncHandler(async (req, res) => {
 });
 
 const updateProducts = asyncHandler(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
         if (req.body.name) {
             req.body.slug = slugify(req.body.name);
@@ -77,4 +77,30 @@ const deleteProducts = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts };
+const getAllProductsPage = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+    try {
+        const count = await Products.countDocuments();
+        const Product = await Products.find()
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const totalPages = Math.ceil(count / limit);
+
+        const response = {
+            Product,
+            currentPage: page,
+            totalPages,
+            totalProducts: count,
+        };
+
+        res.json(response);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+
+
+module.exports = { createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage };

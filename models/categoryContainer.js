@@ -10,7 +10,13 @@ const categoryContainerSchema = new mongoose.Schema(
             {
                 idcategory : String
             }
-        ]
+        ],
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+        },
     },
     {
         timestamps: {
