@@ -1,9 +1,13 @@
 const categoryContainer = require('../models/categoryContainer')
 const asyncHandler = require('express-async-handler')
 const validateMongoDbId = require('../utils/validateMongodbId')
+const slugify = require("slugify");
 
 const createCategoryContainer = asyncHandler(async (req, res) => {
     try {
+        if (req.body.name) {
+            req.body.slug = slugify(req.body.name);
+        }
         const newCategoryContainer = await categoryContainer.create(req.body);
         res.json({
             status: "Create Success",
@@ -38,7 +42,10 @@ const updateCategoryContainer = asyncHandler(async (req, res) => {
     const { id } = req.params;
     validateMongoDbId(id);
     try{
-        const updatedCategoryContainer = await categoryContainer.findByIdAndUpdate(id, req.body,{
+        if (req.body.name) {
+            req.body.slug = slugify(req.body.name);
+        }
+        const updatedCategoryContainer = await categoryContainer.findByIdAndUpdate({_id : id}, req.body,{
             new: true,
         });
         res.json({status: "Update Success", categoryContainer: updatedCategoryContainer})
