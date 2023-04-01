@@ -6,11 +6,6 @@ const categoryContainerSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
-        category: [
-            {
-                idcategory : String
-            }
-        ]
     },
     {
         timestamps: {
