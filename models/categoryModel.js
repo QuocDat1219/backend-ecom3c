@@ -5,12 +5,18 @@ var categorySchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        idCategoriesContainer: {
+            type: String,
+            required: true,
+        }
     },
+    
     {
         timestamps: {
             currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)
         }
     }
+    
 
 );
 
