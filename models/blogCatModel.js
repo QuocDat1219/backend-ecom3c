@@ -11,7 +11,9 @@ var blogcategorySchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)
+    }
   }
 );
 

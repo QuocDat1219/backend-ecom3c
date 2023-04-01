@@ -15,45 +15,22 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    numViews: {
-      type: Number,
-      default: 0,
-    },
-    isLiked: {
-      type: Boolean,
-      default: false,
-    },
-    isDisliked: {
-      type: Boolean,
-      default: false,
-    },
-    likes: [
+    imagesDetail: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+        url: String
+      }
     ],
-    dislikes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-
-    author: {
-      type: String,
-      default: "Admin",
+    imageThumbnail: {
+      type : String 
     },
-    images: [],
+    video: {
+      type: String
+    }
   },
   {
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
-    timestamps: true,
+    timestamps: {
+      currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)
+    }
   }
 );
 

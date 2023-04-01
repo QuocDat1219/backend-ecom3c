@@ -7,7 +7,8 @@ const fs = require("fs");
 const createBlog = asyncHandler(async (req, res) => {
   try {
     const newBlog = await Blog.create(req.body);
-    res.json(newBlog);
+    res.json({ status: 'Create Success', blog: newBlog })
+   
   } catch (error) {
     throw new Error(error);
   }
@@ -20,7 +21,8 @@ const updateBlog = asyncHandler(async (req, res) => {
     const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updateBlog);
+    res.json({ status: 'Update Success', blog: updateBlog })
+   
   } catch (error) {
     throw new Error(error);
   }
