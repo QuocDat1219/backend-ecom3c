@@ -79,7 +79,7 @@ const deleteProducts = asyncHandler(async (req, res) => {
 
 const getAllProductsPage = asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 3;
+    const limit = parseInt(req.query.limit) || 9;
     try {
         const count = await Products.countDocuments();
         const Product = await Products.find()
