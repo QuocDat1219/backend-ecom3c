@@ -113,13 +113,13 @@ const fitercategory = asyncHandler(async (req, res) => {
         const totalPages = Math.ceil(count / limit);
         const response = {
 
-            Product,
+            fproducts,
             currentPage: page,
             totalPages,
             totalProducts: count,
 
         };
-        res.json(fproducts);
+        res.json(response);
     } catch (error) {
         throw new Error(error);
     }
