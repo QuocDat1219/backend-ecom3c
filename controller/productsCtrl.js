@@ -106,8 +106,8 @@ const fitercategory = asyncHandler(async (req, res) => {
     const categoryArray = categories.split(',');
 
     try {
-        const products = await Product.find({ category: { $in: categoryArray } });
-        res.json(products);
+        const fproducts = await Products.find({ idCategory: { $in: categoryArray } });
+        res.json(fproducts);
     } catch (error) {
         throw new Error(error);
     }
