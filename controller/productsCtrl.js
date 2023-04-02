@@ -78,11 +78,12 @@ const deleteProducts = asyncHandler(async (req, res) => {
 });
 
 const getAllProductsPage = asyncHandler(async (req, res) => {
+    const { container } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 9;
     try {
-        const count = await Products.countDocuments();
-        const Product = await Products.find()
+        const count = await Products.countDocuments({idContainerCategory : container});
+        const Product = await Products.find({idContainerCategory : container})
             .skip((page - 1) * limit)
             .limit(limit);
 
