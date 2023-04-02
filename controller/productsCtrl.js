@@ -101,6 +101,17 @@ const getAllProductsPage = asyncHandler(async (req, res) => {
     }
 });
 
+const fitercategory = asyncHandler(async (req, res) => {
+    const { categories } = req.query; // lấy danh sách category đã chọn
+    const categoryArray = categories.split(',');
 
+    try {
+        const products = await Product.find({ category: { $in: categoryArray } });
+        res.json(products);
+    } catch (error) {
+        throw new Error(error);
+    }
 
-module.exports = { createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage };
+})
+
+module.exports = { createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
