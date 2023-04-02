@@ -104,9 +104,21 @@ const getAllProductsPage = asyncHandler(async (req, res) => {
 const fitercategory = asyncHandler(async (req, res) => {
     const { categories } = req.query; // lấy danh sách category đã chọn
     const categoryArray = categories.split(',');
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
 
     try {
+        const count = await Products.countDocuments();
         const fproducts = await Products.find({ idCategory: { $in: categoryArray } });
+        const totalPages = Math.ceil(count / limit);
+        const response = {
+
+            Product,
+            currentPage: page,
+            totalPages,
+            totalProducts: count,
+
+        };
         res.json(fproducts);
     } catch (error) {
         throw new Error(error);
