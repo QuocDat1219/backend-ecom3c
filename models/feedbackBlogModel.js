@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-var feedbackProductSchema = new mongoose.Schema({
-    quality:{
-        type: Number, 
+var feedbackBlog = new mongoose.Schema({
+    email:{
+        type: String,
         required: true,
-        unique: true,
     },
     comment:{
         type: String,
@@ -13,7 +12,7 @@ var feedbackProductSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    email:{
+    idblog:{
         type: String,
         required: true,
     }
@@ -24,3 +23,4 @@ var feedbackProductSchema = new mongoose.Schema({
     }
   }
 );
+module.exports = mongoose.model('feedbackBlog', feedbackBlog)
