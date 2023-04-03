@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  BlogPageSlug,
   createBlog,
   updateBlog,
   getBlog,
@@ -23,13 +24,14 @@ router.put(
   blogImgResize,
   uploadImages
 );
+router.get("/blogpage", BlogPageSlug);
 router.put("/likes", authMiddleware, liketheBlog);
 router.put("/dislikes", authMiddleware, disliketheBlog);
-
 router.put("/:id", authMiddleware, isAdmin, updateBlog);
 router.get("/search", searchCategory);
 router.get("/:id", getBlog);
 router.get("/", getAllBlogs);
+
 router.delete("/:id", authMiddleware, isAdmin, deleteBlog);
 
 module.exports = router;

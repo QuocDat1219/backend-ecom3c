@@ -3,12 +3,16 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const cloudinaryUploadImg = require("../utils/cloudinary");
+const slugify = require("slugify");
 const fs = require("fs");
 const createBlog = asyncHandler(async (req, res) => {
   try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
     const newBlog = await Blog.create(req.body);
     res.json({ status: 'Create Success', blog: newBlog })
-   
+
   } catch (error) {
     throw new Error(error);
   }
@@ -18,11 +22,14 @@ const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
     const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.json({ status: 'Update Success', blog: updateBlog })
-   
+
   } catch (error) {
     throw new Error(error);
   }
@@ -32,7 +39,7 @@ const getBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const getBlog = await Blog.findById({_id:id})
+    const getBlog = await Blog.findById({ _id: id })
     //   .populate("likes")
     //   .populate("dislikes");
     // const updateViews = await Blog.findByIdAndUpdate(
@@ -205,7 +212,21 @@ const searchCategory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const BlogPageSlug = async (req, res) => {
+  const { slugs } = req.query;
+  console.log(slugs);
+  try {
+    const blogs = await Blog.find({ slug : slugs });
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports = {
+  BlogPageSlug,
   createBlog,
   updateBlog,
   getBlog,

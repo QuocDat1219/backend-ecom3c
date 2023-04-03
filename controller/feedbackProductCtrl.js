@@ -3,10 +3,10 @@ const asyncHandler = require("express-async-handler");
 
 
 const createFeedbackProduct = asyncHandler(async (req,res ) =>{
-    console.log(req.body);
+ 
     try{
         const newFeedbackProduct = await feedbackProduct.create(req.body);
-        res.json({status:"Create Success",newFeedbackProduct});
+        res.json({status:"Create Success",feedback: newFeedbackProduct});
     }catch(error){
         throw new Error(error);
     }

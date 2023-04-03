@@ -21,10 +21,16 @@ var blogSchema = new mongoose.Schema(
       }
     ],
     imageThumbnail: {
-      type : String 
+      type: String
     },
     video: {
       type: String
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
     }
   },
   {
