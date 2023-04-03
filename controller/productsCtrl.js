@@ -10,6 +10,7 @@ const createProducts = asyncHandler(async (req, res) => {
 
         const findCategory = await Category.findById({ _id: idCategory })
 
+        req.body.idCategoriesContainer = findCategory.idCategoriesContainer
         if (findCategory != null) {
             if (req.body.name) {
                 req.body.slug = slugify(req.body.name);
@@ -82,8 +83,8 @@ const getAllProductsPage = asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 9;
     try {
-        const count = await Products.countDocuments({idContainerCategory : container});
-        const Product = await Products.find({idContainerCategory : container})
+        const count = await Products.countDocuments({ idContainerCategory: container });
+        const Product = await Products.find({ idContainerCategory: container })
             .skip((page - 1) * limit)
             .limit(limit);
 
@@ -103,27 +104,75 @@ const getAllProductsPage = asyncHandler(async (req, res) => {
 });
 
 const fitercategory = asyncHandler(async (req, res) => {
-    const { categories } = req.query; // lấy danh sách category đã chọn
+    const { categories, brands } = req.query; // lấy danh sách category đã chọn
     const categoryArray = categories.split(',');
+    const brandsArray = brands.split(',');
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 9;
 
-    try {
-        const count = await Products.countDocuments();
-        const fproducts = await Products.find({ idCategory: { $in: categoryArray } });
-        const totalPages = Math.ceil(count / limit);
-        const response = {
 
-            fproducts,
-            currentPage: page,
-            totalPages,
-            totalProducts: count,
+    if (brandsArray == "") {
+        try {
+            console.log(categoryArray);
+            const count = await Products.countDocuments({ idCategory: { $in: categoryArray } });
+            const fproducts = await Products.find({
+                idCategory: { $in: categoryArray }
+            });
+            const totalPages = Math.ceil(count / limit);
+            const response = {
 
-        };
-        res.json(response);
-    } catch (error) {
-        throw new Error(error);
+                fproducts,
+                currentPage: page,
+                totalPages,
+                totalProducts: count,
+
+            };
+            res.json(response);
+        } catch (error) {
+            throw new Error(error);
+        }
+    } else if (categoryArray == "") {
+        try {
+            console.log(brandsArray);
+            const count = await Products.countDocuments({ idCategory: { $in: categoryArray } });
+            const fproducts = await Products.find({
+                idBrand: { $in: brandsArray }
+            });
+            const totalPages = Math.ceil(count / limit);
+            const response = {
+
+                fproducts,
+                currentPage: page,
+                totalPages,
+                totalProducts: count,
+
+            };
+            res.json(response);
+        } catch (error) {
+            throw new Error(error);
+        }
+    } else {
+        try {
+            const count = await Products.countDocuments({ idCategory: { $in: categoryArray } });
+            const fproducts = await Products.find({
+                idCategory: { $in: categoryArray },
+                idBrand: { $in: brandsArray }
+            });
+            const totalPages = Math.ceil(count / limit);
+            const response = {
+
+                fproducts,
+                currentPage: page,
+                totalPages,
+                totalProducts: count,
+
+            };
+            res.json(response);
+        } catch (error) {
+            throw new Error(error);
+        }
     }
+
 
 })
 

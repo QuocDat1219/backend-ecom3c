@@ -1,4 +1,5 @@
 const Category = require("../models/categoryModel");
+const Products = require("../models/productsModel");
 const asyncHandler = require("express-async-handler");
 
 const createCategory = asyncHandler(async (req, res) => {
@@ -17,7 +18,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
     console.log(id);
     try {
-        const updateCategory = await Category.findOneAndUpdate({ _id : id }, req.body, { new: true });
+        const updateCategory = await Category.findOneAndUpdate({ _id: id }, req.body, { new: true });
         res.json({ status: 'Update Success', category: updateCategory })
     } catch (error) {
         throw new Error(error);
@@ -53,8 +54,9 @@ const getaCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
     try {
-        const findCategory = await Category.findById({_id : id});
-        res.json({ category: findCategory });
+        const count = await Products.countDocuments({ idCategory: id });
+        const findCategory = await Category.findById({ _id: id });
+        res.json({ category: findCategory, totalProductInCategory: count });
     } catch (error) {
         throw new Error(error);
     }
@@ -62,4 +64,4 @@ const getaCategory = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { createCategory, updateCategory, deleteCategory ,getAllCategory,getaCategory}
+module.exports = { createCategory, updateCategory, deleteCategory, getAllCategory, getaCategory }
