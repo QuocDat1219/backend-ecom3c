@@ -9,10 +9,6 @@ var brandSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    idCategoriesContainer: {
-      type: String,
-      required: true,
-    }
   },
   {
     timestamps: {

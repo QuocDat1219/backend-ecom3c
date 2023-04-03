@@ -31,6 +31,10 @@ var productsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        idBrand: {
+            type: String,
+            required: true,
+        },
         slug: {
             type: String,
             required: true,
