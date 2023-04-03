@@ -56,6 +56,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   }
 });
 
+
 const deleteBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -190,7 +191,20 @@ const uploadImages = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
+const searchCategory = async (req, res) => {
+  const { keyword } = req.query;
+  try {
+    const blogs = await Blog.find({
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    });
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   createBlog,
   updateBlog,
@@ -200,4 +214,5 @@ module.exports = {
   liketheBlog,
   disliketheBlog,
   uploadImages,
+  searchCategory,
 };

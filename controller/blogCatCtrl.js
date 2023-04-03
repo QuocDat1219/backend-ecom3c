@@ -50,6 +50,7 @@ const getallCategory = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 module.exports = {
   createCategory,
   updateCategory,
