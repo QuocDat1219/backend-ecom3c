@@ -8,11 +8,12 @@ const {
     updateProducts,
     deleteProducts,
     getAllProductsPage,
-    fitercategory
+    fitercategory,
+    fiterCategoryContainer
 } = require("../controller/productsCtrl");
 
 const router = express.Router();
-
+router.get("/fitercontainer", fiterCategoryContainer);
 router.post("/", authMiddleware, isAdmin, createProducts);
 router.get("/", getAllProductsPage);
 router.get("/fitercategory", fitercategory);

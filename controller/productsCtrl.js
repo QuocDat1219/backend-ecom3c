@@ -176,4 +176,23 @@ const fitercategory = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = { createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+const fiterCategoryContainer = asyncHandler(async (req, res) => {
+    const { idcatecontainer } = req.query; // lấy danh sách category đã chọn
+
+
+    try {
+
+     
+        const fproducts = await Products.find({
+            idContainerCategory: idcatecontainer
+        });
+     
+        res.json(fproducts);
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+
+
+module.exports = { fiterCategoryContainer,createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
