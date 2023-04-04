@@ -47,7 +47,7 @@ const deleteFeedbackProduct = asyncHandler(async (req, res) => {
 
 const getFeedbackProductInID = asyncHandler(async (req,res) => {
     const { idproducts } = req.query;
-
+    
     try {
         const findFeedBack = await feedbackProduct.find({ idproduct : idproducts })
         res.json(findFeedBack)

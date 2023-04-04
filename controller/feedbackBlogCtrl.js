@@ -43,9 +43,21 @@ const deleteFeedbackBlog = asyncHandler(async (req, res) =>{
         throw new Error(error);
     };
 });
+
+const getFeedbackBlogInId = asyncHandler(async (req,res) => {
+    const { blogid } = req.query;
+    console.log(blogid);
+    try {
+        const findFeedBack = await feedbackBlog.find({ idblog : blogid })
+        res.json(findFeedBack)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
 module.exports = {
     createFeedbackBlog,
     getAllFeedbackProducts,
     getAFeedbackBlog,
     deleteFeedbackBlog,
+    getFeedbackBlogInId,
 }
