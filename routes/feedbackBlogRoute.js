@@ -5,5 +5,5 @@ const {
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.post('/', authMiddleware,isAdmin, createFeedbackBlog);
+router.post('/', createFeedbackBlog);
 module.exports = router;
