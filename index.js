@@ -33,7 +33,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("api/test", (req, res, next) => {
+app.get("api/test", (req, res, next) => {
   res.json("Da update! ");
 });
 app.use("/api/user", authRouter);
