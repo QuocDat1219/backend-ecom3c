@@ -33,6 +33,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use("/test", (req, res, next) => {
+  res.json("Da update! ");
+});
 app.use("/api/user", authRouter);
 app.use("/api/blog", blogRouter);
 // app.use("/api/category", categoryRouter);
