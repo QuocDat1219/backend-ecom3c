@@ -19,7 +19,7 @@ const uploadRouter = require("./routes/uploadRoute");
 const productsRouter = require("./routes/productsRoute");
 const linkRouter = require("./routes/linkRoute");
 const menuRouter = require("./routes/menuRoute");
-const infoRouter = require("./routes/infoWebRoute")
+const infoRouter = require("./routes/infoWebRoute");
 const categoryContainerRouter = require("./routes/categoryContainerRoute");
 const feedbackProductRouter = require("./routes/feedbackProductRoute");
 const feedbackBlogRouter = require("./routes/feedbackBlogRoute");
@@ -36,6 +36,11 @@ app.use(cookieParser());
 app.use("/api/user", authRouter);
 app.use("/api/blog", blogRouter);
 // app.use("/api/category", categoryRouter);
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "Welcome to the API",
+  });
+});
 app.use("/api/blogcategory", blogcategoryRouter);
 app.use("/api/brand", brandRouter);
 app.use("/api/coupon", couponRouter);
@@ -45,9 +50,9 @@ app.use("/api/upload", uploadRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/links", linkRouter);
-app.use("/api/menu",menuRouter);
-app.use("/api/info",infoRouter);
-app.use ("/api/categorycontainer", categoryContainerRouter);
+app.use("/api/menu", menuRouter);
+app.use("/api/info", infoRouter);
+app.use("/api/categorycontainer", categoryContainerRouter);
 app.use("/api/feedbackproduct", feedbackProductRouter);
 app.use("/api/feedbackblog", feedbackBlogRouter);
 
