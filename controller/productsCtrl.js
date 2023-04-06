@@ -195,17 +195,31 @@ const fiterCategoryContainer = asyncHandler(async (req, res) => {
 
 const fiterCategoryContainerBySlug = asyncHandler(async (req, res) => {
     const { slug } = req.query; // lấy danh sách category đã chọn
-
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
 
     try {
+
         const fcategoryctn = await categoryContainer.find({ slug: slug })
         console.log(fcategoryctn[0]._id.toHexString());
-        
-        const fproducts = await Products.find({
+        const count = await Products.countDocuments({ idContainerCategory: fcategoryctn[0]._id.toHexString() });
+        const products = await Products.find({
             idContainerCategory: fcategoryctn[0]._id.toHexString()
-        });
+        }).skip((page - 1) * limit)
+            .limit(limit);
 
-        res.json(fproducts);
+        const totalPages = Math.ceil(count / limit);
+
+        const response = {
+            products,
+            currentPage: page,
+            totalPages,
+            totalProducts: count,
+        };
+
+        res.json(response);
+
+
     } catch (error) {
         throw new Error(error);
     }
