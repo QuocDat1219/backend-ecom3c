@@ -2,6 +2,7 @@ const express = require('express');
 
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const {
+    fiterCategoryContainerBySlug,
     createProducts,
     getAllProducts,
     getaProducts,
@@ -14,6 +15,7 @@ const {
 
 const router = express.Router();
 router.get("/fitercontainer", fiterCategoryContainer);
+router.get("/fitercontainerslug", fiterCategoryContainerBySlug);
 router.post("/", authMiddleware, isAdmin, createProducts);
 router.get("/", getAllProductsPage);
 router.get("/fitercategory", fitercategory);

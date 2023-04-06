@@ -6,6 +6,12 @@ const categoryContainerSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+        },
     },
     {
         timestamps: {

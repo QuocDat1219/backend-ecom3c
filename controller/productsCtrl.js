@@ -2,6 +2,8 @@ const Products = require("../models/productsModel");
 const Category = require("../models/categoryModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
+const categoryContainer = require("../models/categoryContainer");
+const { ObjectId } = require('mongodb');
 
 const createProducts = asyncHandler(async (req, res) => {
     const { idCategory } = req.body;
@@ -184,13 +186,29 @@ const fiterCategoryContainer = asyncHandler(async (req, res) => {
         const fproducts = await Products.find({
             idContainerCategory: idcatecontainer
         });
-     
+
         res.json(fproducts);
     } catch (error) {
         throw new Error(error);
     }
 })
 
+const fiterCategoryContainerBySlug = asyncHandler(async (req, res) => {
+    const { slug } = req.query; // lấy danh sách category đã chọn
 
 
-module.exports = { fiterCategoryContainer,createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+    try {
+        const fcategoryctn = await categoryContainer.find({ slug: slug })
+        console.log(fcategoryctn[0]._id.toHexString());
+        
+        const fproducts = await Products.find({
+            idContainerCategory: fcategoryctn[0]._id.toHexString()
+        });
+
+        res.json(fproducts);
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+module.exports = { fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
