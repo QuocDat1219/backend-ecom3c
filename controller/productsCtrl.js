@@ -181,8 +181,6 @@ const fiterCategoryContainer = asyncHandler(async (req, res) => {
 
 
     try {
-
-     
         const fproducts = await Products.find({
             idContainerCategory: idcatecontainer
         });
