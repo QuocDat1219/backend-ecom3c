@@ -11,12 +11,14 @@ const fs = require("fs");
 const createBlog = asyncHandler(async (req, res) => {
 
   try {
-    
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "product",
-    });
-    req.body.imageThumbnail = result.secure_url
-    console.log(req.body.imageThumbnail);
+    if (req.body.image != undefined) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "product",
+      });
+      req.body.imageThumbnail = result.secure_url
+      console.log(req.body.imageThumbnail);
+    }
+
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
