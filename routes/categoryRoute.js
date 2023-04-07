@@ -6,9 +6,10 @@ const {
     updateCategory,
     deleteCategory,
     getAllCategory,
-    getaCategory
+    getaCategory,
+    fiterCTNBySlugCate
 } = require("../controller/categoryCtrl");
-
+router.get("/finctn", fiterCTNBySlugCate);
 router.post("/", authMiddleware, isAdmin, createCategory);
 router.put("/:id", authMiddleware,isAdmin, updateCategory);
 router.delete("/:id", authMiddleware,isAdmin, deleteCategory);
