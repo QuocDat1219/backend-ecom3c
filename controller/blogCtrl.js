@@ -11,7 +11,8 @@ const fs = require("fs");
 const createBlog = asyncHandler(async (req, res) => {
 
   try {
-    if (req.body.image != undefined) {
+ 
+    if (req.file != undefined) {
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "product",
       });
