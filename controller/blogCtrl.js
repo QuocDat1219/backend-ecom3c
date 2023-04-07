@@ -3,16 +3,20 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const cloudinaryUploadImg = require("../utils/cloudinary");
+const cloudinary = require("../utils/cloudinarys");
 const slugify = require("slugify");
 
 const fs = require("fs");
+
 const createBlog = asyncHandler(async (req, res) => {
-  const {image} = req.body
+
   try {
-    const result = await cloudinaryUploadImg.uploader.upload(image, {
+    
+    const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "product",
-    })
+    });
     req.body.imageThumbnail = result.secure_url
+    console.log(req.body.imageThumbnail);
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
