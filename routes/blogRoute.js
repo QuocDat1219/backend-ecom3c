@@ -16,7 +16,7 @@ const { blogImgResize, uploadPhoto } = require("../middlewares/uploadImage");
 const upload = require("../utils/multer")
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin,upload.single("image"), createBlog);
+router.post("/", upload.single("image"), createBlog);
 router.put(
   "/upload/:id",
   authMiddleware,
