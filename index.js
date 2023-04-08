@@ -23,6 +23,7 @@ const infoRouter = require("./routes/infoWebRoute");
 const categoryContainerRouter = require("./routes/categoryContainerRoute");
 const feedbackProductRouter = require("./routes/feedbackProductRoute");
 const feedbackBlogRouter = require("./routes/feedbackBlogRoute");
+const contactRouter = require("./routes/contactRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -55,6 +56,7 @@ app.use("/api/info", infoRouter);
 app.use("/api/categorycontainer", categoryContainerRouter);
 app.use("/api/feedbackproduct", feedbackProductRouter);
 app.use("/api/feedbackblog", feedbackBlogRouter);
+app.use("/api/contact", contactRouter);
 
 app.use(notFound);
 app.use(errorHandler);
