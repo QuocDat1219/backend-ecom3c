@@ -3,14 +3,25 @@ const Category = require("../models/categoryModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const categoryContainer = require("../models/categoryContainer");
-const { ObjectId } = require('mongodb');
+const cloudinary = require("../utils/cloudinarys");
 
 const createProducts = asyncHandler(async (req, res) => {
-    const { idCategory } = req.body;
-    console.log(idCategory);
-    try {
 
-        const findCategory = await Category.findById({ _id: idCategory })
+
+    try {
+        console.log(req.body.idCategory);
+        if (req.file != undefined) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "products",
+            });
+            req.body.imagesDefault =
+            {
+                public_id: result.public_id,
+                secure_url: result.secure_url
+            }
+
+        }
+        const findCategory = await Category.findById({ _id: req.body.idCategory })
 
         req.body.idCategoriesContainer = findCategory.idCategoriesContainer
         if (findCategory != null) {

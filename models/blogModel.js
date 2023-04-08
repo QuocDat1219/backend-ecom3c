@@ -15,13 +15,9 @@ var blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    imagesDetail: [
-      {
-        url: String
-      }
-    ],
     imageThumbnail: {
-      type: String
+      public_id: String,
+      secure_url: String,
     },
     video: {
       type: String

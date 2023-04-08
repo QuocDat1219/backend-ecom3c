@@ -47,17 +47,15 @@ var productsSchema = new mongoose.Schema(
         },
         imagesDetail: [
             {
-                original:String,
+                original: String,
                 thumbnail: String,
             },
         ],
 
         imagesDefault: {
-            type: String,
+            public_id: String,
+            secure_url: String,
         },
-
-
-
     }, {
     timestamps: {
         currentTime: () => new Date(Date.now() + 7 * 60 * 60 * 1000)

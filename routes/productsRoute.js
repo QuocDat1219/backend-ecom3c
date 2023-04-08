@@ -12,11 +12,12 @@ const {
     fitercategory,
     fiterCategoryContainer
 } = require("../controller/productsCtrl");
+const upload = require("../utils/multer")
 
 const router = express.Router();
 router.get("/fitercontainer", fiterCategoryContainer);
 router.get("/fitercontainerslug", fiterCategoryContainerBySlug);
-router.post("/", authMiddleware, isAdmin, createProducts);
+router.post("/", upload.single("image"), authMiddleware, isAdmin, createProducts);
 router.get("/", getAllProductsPage);
 router.get("/fitercategory", fitercategory);
 router.get("/getall", getAllProducts);
