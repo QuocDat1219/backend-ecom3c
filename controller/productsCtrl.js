@@ -20,6 +20,17 @@ const createProducts = asyncHandler(async (req, res) => {
                 secure_url: result.secure_url
             }
 
+            req.body.imagesDetail =
+                [
+                    {
+                        public_id: result.public_id,
+                        original: result.secure_url,
+                        thumbnail: result.secure_url,
+                    },
+
+                ]
+
+
         }
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
