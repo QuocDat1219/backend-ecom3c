@@ -3,10 +3,25 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const cloudinaryUploadImg = require("../utils/cloudinary");
+const cloudinary = require("../utils/cloudinarys");
 const slugify = require("slugify");
+
 const fs = require("fs");
+
 const createBlog = asyncHandler(async (req, res) => {
+
   try {
+    console.log(req.body.title);
+    if (req.file != undefined) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "product",
+      });
+      req.body.imageThumbnail = {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      }
+    }
+
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
@@ -217,7 +232,7 @@ const BlogPageSlug = async (req, res) => {
   const { slugs } = req.query;
   console.log(slugs);
   try {
-    const blogs = await Blog.find({ slug : slugs });
+    const blogs = await Blog.find({ slug: slugs });
     res.json(blogs);
   } catch (error) {
     res.status(500).json({ message: error.message });

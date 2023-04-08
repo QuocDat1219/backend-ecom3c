@@ -1,6 +1,7 @@
 const Category = require("../models/categoryModel");
 const Products = require("../models/productsModel");
 const asyncHandler = require("express-async-handler");
+const categoryContainer = require("../models/categoryContainer");
 
 const createCategory = asyncHandler(async (req, res) => {
 
@@ -62,6 +63,19 @@ const getaCategory = asyncHandler(async (req, res) => {
     }
 });
 
+const fiterCTNBySlugCate = asyncHandler(async (req, res) => {
+    const { slug } = req.query; // lấy danh sách category đã chọn
+    
+    try {
 
+        const fcategoryctn = await categoryContainer.find({ slug: slug })
+        console.log(fcategoryctn[0]._id.toHexString());
+        const Categorys = await Category.find({ idCategoriesContainer: fcategoryctn[0]._id.toHexString() })
+        res.json(Categorys);
 
-module.exports = { createCategory, updateCategory, deleteCategory, getAllCategory, getaCategory }
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+module.exports = {fiterCTNBySlugCate, createCategory, updateCategory, deleteCategory, getAllCategory, getaCategory }

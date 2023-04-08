@@ -2,13 +2,26 @@ const Products = require("../models/productsModel");
 const Category = require("../models/categoryModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
+const categoryContainer = require("../models/categoryContainer");
+const cloudinary = require("../utils/cloudinarys");
 
 const createProducts = asyncHandler(async (req, res) => {
-    const { idCategory } = req.body;
-    console.log(idCategory);
-    try {
 
-        const findCategory = await Category.findById({ _id: idCategory })
+
+    try {
+        console.log(req.body.idCategory);
+        if (req.file != undefined) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "products",
+            });
+            req.body.imagesDefault =
+            {
+                public_id: result.public_id,
+                secure_url: result.secure_url
+            }
+
+        }
+        const findCategory = await Category.findById({ _id: req.body.idCategory })
 
         req.body.idCategoriesContainer = findCategory.idCategoriesContainer
         if (findCategory != null) {
@@ -181,18 +194,46 @@ const fiterCategoryContainer = asyncHandler(async (req, res) => {
 
 
     try {
-
-     
         const fproducts = await Products.find({
             idContainerCategory: idcatecontainer
         });
-     
+
         res.json(fproducts);
     } catch (error) {
         throw new Error(error);
     }
 })
 
+const fiterCategoryContainerBySlug = asyncHandler(async (req, res) => {
+    const { slug } = req.query; // lấy danh sách category đã chọn
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+
+    try {
+
+        const fcategoryctn = await categoryContainer.find({ slug: slug })
+        console.log(fcategoryctn[0]._id.toHexString());
+        const count = await Products.countDocuments({ idContainerCategory: fcategoryctn[0]._id.toHexString() });
+        const products = await Products.find({
+            idContainerCategory: fcategoryctn[0]._id.toHexString()
+        }).skip((page - 1) * limit)
+            .limit(limit);
+
+        const totalPages = Math.ceil(count / limit);
+
+        const response = {
+            products,
+            currentPage: page,
+            totalPages,
+            totalProducts: count,
+        };
+
+        res.json(response);
 
 
-module.exports = { fiterCategoryContainer,createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+module.exports = { fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
