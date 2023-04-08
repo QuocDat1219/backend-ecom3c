@@ -47,6 +47,7 @@ var productsSchema = new mongoose.Schema(
         },
         imagesDetail: [
             {
+                public_id: String,
                 original: String,
                 thumbnail: String,
             },
