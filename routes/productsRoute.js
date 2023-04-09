@@ -19,8 +19,8 @@ const upload = require("../utils/multer")
 const router = express.Router();
 
 
-router.post("/", upload.single("image"), createProducts);
-router.post("/newimg", upload.single("image"), updateimagedetailproduct);
+router.post("/", upload.single("image"), authMiddleware, isAdmin, createProducts);
+router.post("/newimg", upload.single("image"), authMiddleware, isAdmin, updateimagedetailproduct);
 router.post("/updateimgdetail", upload.single("image"), authMiddleware, isAdmin, updateProductsImgDetail);
 
 
