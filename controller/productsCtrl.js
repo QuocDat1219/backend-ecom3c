@@ -242,4 +242,31 @@ const fiterCategoryContainerBySlug = asyncHandler(async (req, res) => {
     }
 })
 
-module.exports = { fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+const updateimagedetailproduct = asyncHandler(async (req, res) => {
+    const { id } = req.body
+    try {
+        if (req.file != undefined) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "products",
+            });
+            const updatesimg = await Products.updateOne({ _id: id }, {
+                $push: {
+                    imagesDetail: {
+                        public_id: result.public_id,
+                        original: result.secure_url,
+                        thumbnail: result.secure_url,
+                    }
+                }
+            }, {
+                new: true,
+            })
+            res.json({ status: "Update Success" });
+        }
+
+    } catch (error) {
+        throw new Error(error);
+    }
+
+
+})
+module.exports = { updateimagedetailproduct, fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
