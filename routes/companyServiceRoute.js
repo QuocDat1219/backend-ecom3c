@@ -9,5 +9,5 @@ const router = express.Router();
 
 router.get("/", getAllCompanyService);
 router.post("/", createCompanyService);
-router.put("/:id", updateCompanyService);
+router.put("/:id",authMiddleware,isAdmin, updateCompanyService);
 module.exports = router;
