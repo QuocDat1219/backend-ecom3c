@@ -25,6 +25,8 @@ const feedbackProductRouter = require("./routes/feedbackProductRoute");
 const feedbackBlogRouter = require("./routes/feedbackBlogRoute");
 const contactRouter = require("./routes/contactRoute");
 const companyServiceRoute = require("./routes/companyServiceRoute");
+const aboutUsRoute = require("./routes/aboutUsRoute");
+const home = require("./routes/homeRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -59,6 +61,8 @@ app.use("/api/feedbackproduct", feedbackProductRouter);
 app.use("/api/feedbackblog", feedbackBlogRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/company-service", companyServiceRoute);
+app.use("/api/home", home);
+app.use("/api/about-us", aboutUsRoute);
 
 app.use(notFound);
 app.use(errorHandler);

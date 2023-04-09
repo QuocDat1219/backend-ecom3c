@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-var aboutUsSchema = new mongoose.Chema({
+var aboutUsSchema = new mongoose.Schema({
     imgheader: {
         public_id: String,
         secure_url: String,
@@ -64,14 +64,6 @@ var aboutUsSchema = new mongoose.Chema({
         type: String,
         required: true,
     },
-    companyname:{
-        type: String,
-        required: true,
-    },
-    taxnumber:{
-        type: String,
-        required: true,
-    }
 },
 {
     timestamps: {
