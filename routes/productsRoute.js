@@ -21,7 +21,8 @@ const router = express.Router();
 
 router.post("/", upload.single("image"), createProducts);
 router.post("/newimg", upload.single("image"), updateimagedetailproduct);
-router.post("/updateimgdetail", upload.single("image"), updateProductsImgDetail);
+router.post("/updateimgdetail", upload.single("image"), authMiddleware, isAdmin, updateProductsImgDetail);
+
 
 router.get("/fitercontainer", fiterCategoryContainer);
 router.get("/fitercontainerslug", fiterCategoryContainerBySlug);

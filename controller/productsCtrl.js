@@ -271,10 +271,9 @@ const updateimagedetailproduct = asyncHandler(async (req, res) => {
 const updateProductsImgDetail = asyncHandler(async (req, res) => {
     const { id, idimg } = req.body;
     try {
-        const findProduct = await Products.findById(id);
-
-        const imageDetail = findProduct.imagesDetail.findById(idimg);
-
+        const findProduct = await Products.find({_id : id});
+        console.log(findProduct);
+        const imageDetail = await findProduct.imagesDetail.find({_id : idimg});
 
         console.log(imageDetail)
         const publicId = imageDetail.public_id;
