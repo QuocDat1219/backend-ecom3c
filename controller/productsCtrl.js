@@ -9,7 +9,6 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
-        console.log(req.body.idCategory);
         if (req.file != undefined) {
             const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: "products",
@@ -19,7 +18,6 @@ const createProducts = asyncHandler(async (req, res) => {
                 public_id: result.public_id,
                 secure_url: result.secure_url
             }
-
             req.body.imagesDetail =
                 [
                     {
@@ -27,10 +25,7 @@ const createProducts = asyncHandler(async (req, res) => {
                         original: result.secure_url,
                         thumbnail: result.secure_url,
                     },
-
                 ]
-
-
         }
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 

@@ -25,6 +25,7 @@ router.put(
   blogImgResize,
   uploadImages
 );
+
 router.get("/blogpage", BlogPageSlug);
 router.put("/likes", authMiddleware, liketheBlog);
 router.put("/dislikes", authMiddleware, disliketheBlog);
