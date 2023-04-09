@@ -9,8 +9,13 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
-
-
+        const imgplid = req.body.imagesDetail[0].public_id;
+        const imgscul = req.body.imagesDetail[0].original;
+        req.body.imagesDefault = {
+            public_id: imgplid,
+            secure_url: imgscul
+        }
+        console.log(imgplid);
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
         req.body.idContainerCategory = findCategory.idCategoriesContainer
