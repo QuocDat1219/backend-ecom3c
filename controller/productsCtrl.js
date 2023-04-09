@@ -29,7 +29,7 @@ const createProducts = asyncHandler(async (req, res) => {
         }
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
-        req.body.idCategoriesContainer = findCategory.idCategoriesContainer
+        req.body.idContainerCategory = findCategory.idCategoriesContainer
         if (findCategory != null) {
             if (req.body.name) {
                 req.body.slug = slugify(req.body.name);
