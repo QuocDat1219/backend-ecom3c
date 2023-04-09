@@ -9,8 +9,7 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
-        req.body.imagesDetail = JSON.parse(req.body.imagesDetail);
-        req.body.imagesDefault = JSON.parse(req.body.imagesDefault);
+
 
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
