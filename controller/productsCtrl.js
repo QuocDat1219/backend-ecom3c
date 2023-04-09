@@ -266,7 +266,46 @@ const updateimagedetailproduct = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new Error(error);
     }
-
-
 })
-module.exports = { updateimagedetailproduct, fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+
+const updateProductsImgDetail = asyncHandler(async (req, res) => {
+    const { id, idimg } = req.body;
+    try {
+        const findProduct = await Products.findById(id);
+
+        const imageDetail = findProduct.imagesDetail.findById(idimg);
+
+
+        console.log(imageDetail)
+        const publicId = imageDetail.public_id;
+
+        cloudinary.uploader.destroy(publicId, function (error, result) {
+            if (error) {
+                console.log('Error deleting image:', error.message);
+            } else {
+                console.log('Image deleted:', result);
+            }
+        });
+
+        // const imgdetailfind = await Products.find({_id:id  )
+
+
+
+        // res.json({ status: "Update Success", product: updateProduct });
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+module.exports = {
+    updateProductsImgDetail,
+    updateimagedetailproduct,
+    fiterCategoryContainerBySlug,
+    fiterCategoryContainer,
+    createProducts,
+    getAllProducts,
+    getaProducts,
+    updateProducts,
+    deleteProducts,
+    getAllProductsPage,
+    fitercategory
+};
