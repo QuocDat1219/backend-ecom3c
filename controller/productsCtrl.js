@@ -9,13 +9,37 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
+        let pictureFiles = req.files;
+
+        if (!pictureFiles)
+            return res.status(400).json({ message: "No picture attached!" });
+
+        let multiplePicturePromise = pictureFiles.map((image) =>
+            cloudinary.v2.uploader.upload(image.path)
+        );
+
+        let imageResponses = await Promise.all(multiplePicturePromise);
+        console.log(imageResponses);
+        const imageDetails = []
+        imageResponses.map((item) => {
+         
+            const details = {
+                public_id: item.public_id,
+                original: item.secure_url,
+                thumbnail: item.secure_url
+            }
+
+            imageDetails.push(details);
+        })
+
+        req.body.imagesDetail = imageDetails
         const imgplid = req.body.imagesDetail[0].public_id;
         const imgscul = req.body.imagesDetail[0].original;
         req.body.imagesDefault = {
             public_id: imgplid,
             secure_url: imgscul
         }
-        console.log(imgplid);
+
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
         req.body.idContainerCategory = findCategory.idCategoriesContainer
