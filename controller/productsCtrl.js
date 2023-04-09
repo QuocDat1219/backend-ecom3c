@@ -9,24 +9,7 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
-        if (req.file != undefined) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: "products",
-            });
-            req.body.imagesDefault =
-            {
-                public_id: result.public_id,
-                secure_url: result.secure_url
-            }
-            req.body.imagesDetail =
-                [
-                    {
-                        public_id: result.public_id,
-                        original: result.secure_url,
-                        thumbnail: result.secure_url,
-                    },
-                ]
-        }
+
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
         req.body.idContainerCategory = findCategory.idCategoriesContainer
@@ -271,9 +254,9 @@ const updateimagedetailproduct = asyncHandler(async (req, res) => {
 const updateProductsImgDetail = asyncHandler(async (req, res) => {
     const { id, idimg } = req.body;
     try {
-        const findProduct = await Products.find({_id : id});
+        const findProduct = await Products.find({ _id: id });
         console.log(findProduct);
-        const imageDetail = await findProduct.imagesDetail.find({_id : idimg});
+        const imageDetail = await findProduct.imagesDetail.find({ _id: idimg });
 
         console.log(imageDetail)
         const publicId = imageDetail.public_id;
