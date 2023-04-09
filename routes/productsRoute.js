@@ -10,14 +10,22 @@ const {
     deleteProducts,
     getAllProductsPage,
     fitercategory,
-    fiterCategoryContainer
+    fiterCategoryContainer,
+    updateimagedetailproduct,
+    updateProductsImgDetail
 } = require("../controller/productsCtrl");
 const upload = require("../utils/multer")
 
 const router = express.Router();
+
+
+router.post("/", upload.single("image"), authMiddleware, isAdmin, createProducts);
+router.post("/newimg", upload.single("image"), authMiddleware, isAdmin, updateimagedetailproduct);
+router.post("/updateimgdetail", upload.single("image"), authMiddleware, isAdmin, updateProductsImgDetail);
+
+
 router.get("/fitercontainer", fiterCategoryContainer);
 router.get("/fitercontainerslug", fiterCategoryContainerBySlug);
-router.post("/", upload.single("image"), authMiddleware, isAdmin, createProducts);
 router.get("/", getAllProductsPage);
 router.get("/fitercategory", fitercategory);
 router.get("/getall", getAllProducts);

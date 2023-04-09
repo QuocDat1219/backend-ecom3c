@@ -9,32 +9,10 @@ const createProducts = asyncHandler(async (req, res) => {
 
 
     try {
-        console.log(req.body.idCategory);
-        if (req.file != undefined) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: "products",
-            });
-            req.body.imagesDefault =
-            {
-                public_id: result.public_id,
-                secure_url: result.secure_url
-            }
 
-            req.body.imagesDetail =
-                [
-                    {
-                        public_id: result.public_id,
-                        original: result.secure_url,
-                        thumbnail: result.secure_url,
-                    },
-
-                ]
-
-
-        }
         const findCategory = await Category.findById({ _id: req.body.idCategory })
 
-        req.body.idCategoriesContainer = findCategory.idCategoriesContainer
+        req.body.idContainerCategory = findCategory.idCategoriesContainer
         if (findCategory != null) {
             if (req.body.name) {
                 req.body.slug = slugify(req.body.name);
@@ -247,4 +225,69 @@ const fiterCategoryContainerBySlug = asyncHandler(async (req, res) => {
     }
 })
 
-module.exports = { fiterCategoryContainerBySlug, fiterCategoryContainer, createProducts, getAllProducts, getaProducts, updateProducts, deleteProducts, getAllProductsPage, fitercategory };
+const updateimagedetailproduct = asyncHandler(async (req, res) => {
+    const { id } = req.body
+    try {
+        if (req.file != undefined) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "products",
+            });
+            const updatesimg = await Products.updateOne({ _id: id }, {
+                $push: {
+                    imagesDetail: {
+                        public_id: result.public_id,
+                        original: result.secure_url,
+                        thumbnail: result.secure_url,
+                    }
+                }
+            }, {
+                new: true,
+            })
+            res.json({ status: "Update Success" });
+        }
+
+    } catch (error) {
+        throw new Error(error);
+    }
+})
+
+const updateProductsImgDetail = asyncHandler(async (req, res) => {
+    const { id, idimg } = req.body;
+    try {
+        const findProduct = await Products.find({ _id: id });
+        console.log(findProduct);
+        const imageDetail = await findProduct.imagesDetail.find({ _id: idimg });
+
+        console.log(imageDetail)
+        const publicId = imageDetail.public_id;
+
+        cloudinary.uploader.destroy(publicId, function (error, result) {
+            if (error) {
+                console.log('Error deleting image:', error.message);
+            } else {
+                console.log('Image deleted:', result);
+            }
+        });
+
+        // const imgdetailfind = await Products.find({_id:id  )
+
+
+
+        // res.json({ status: "Update Success", product: updateProduct });
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+module.exports = {
+    updateProductsImgDetail,
+    updateimagedetailproduct,
+    fiterCategoryContainerBySlug,
+    fiterCategoryContainer,
+    createProducts,
+    getAllProducts,
+    getaProducts,
+    updateProducts,
+    deleteProducts,
+    getAllProductsPage,
+    fitercategory
+};
