@@ -30,7 +30,7 @@ router.get("/", getAllProductsPage);
 router.get("/fitercategory", fitercategory);
 router.get("/getall", getAllProducts);
 router.get("/:id", getaProducts);
-router.put("/:id", authMiddleware, isAdmin, updateProducts);
+router.put("/:id", upload.array("image", 10), updateProducts);
 router.delete("/:id", authMiddleware, isAdmin, deleteProducts);
 
 
