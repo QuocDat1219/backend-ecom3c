@@ -7,18 +7,19 @@ const InfoWebSchema = mongoose.Schema({
     address: {
         type: String,
     },
-    nameadmin: {
-        type: String,
-    },
     hotline: {
         type: String,
     },
-    taxcode: {
+    slogan: {
         type: String,
     },
-    pagefbid: {
+    iframeggmap: {
         type: String,
     },
+    logo:{
+        public_id: String,
+        secure_url: String
+    }
 })
 
 module.exports = mongoose.model("InfoWeb", InfoWebSchema)

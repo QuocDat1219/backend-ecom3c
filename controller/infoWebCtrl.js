@@ -17,7 +17,7 @@ const updateInfoWeb = asyncHandler(async (req, res) => {
 const getInfo = asyncHandler(async (req, res) => {
     try {
         const info = await InfoWeb.find();
-        res.json({Status: "Update Success",Info: info})
+        res.json(info)
     } catch (error) {
         throw new Error(error)
     }
