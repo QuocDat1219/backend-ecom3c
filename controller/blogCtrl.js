@@ -37,6 +37,16 @@ const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
+    console.log(req.body.title);
+    if (req.file != undefined) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "product",
+      });
+      req.body.imageThumbnail = {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      }
+    }
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }

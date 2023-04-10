@@ -27,9 +27,11 @@ router.put(
 );
 
 router.get("/blogpage", BlogPageSlug);
+
+router.put("/:id", upload.single("image"), updateBlog);
 router.put("/likes", authMiddleware, liketheBlog);
 router.put("/dislikes", authMiddleware, disliketheBlog);
-router.put("/:id", authMiddleware, isAdmin, updateBlog);
+
 router.get("/search", searchCategory);
 router.get("/:id", getBlog);
 router.get("/", getAllBlogs);
