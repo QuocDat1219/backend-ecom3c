@@ -9,7 +9,6 @@ const slugify = require("slugify");
 const fs = require("fs");
 
 const createBlog = asyncHandler(async (req, res) => {
-
   try {
     console.log(req.body.title);
     if (req.file != undefined) {
@@ -18,16 +17,15 @@ const createBlog = asyncHandler(async (req, res) => {
       });
       req.body.imageThumbnail = {
         public_id: result.public_id,
-        secure_url: result.secure_url
-      }
+        secure_url: result.secure_url,
+      };
     }
 
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
     const newBlog = await Blog.create(req.body);
-    res.json({ status: 'Create Success', blog: newBlog })
-
+    res.json({ status: "Create Success", blog: newBlog });
   } catch (error) {
     throw new Error(error);
   }
@@ -35,26 +33,39 @@ const createBlog = asyncHandler(async (req, res) => {
 
 const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const getBlog = await Blog.findById({ _id: id });
   validateMongoDbId(id);
   try {
-    console.log(req.body.title);
     if (req.file != undefined) {
+      cloudinary.uploader.destroy(
+        getBlog[0].imageThumbnail.public_id,
+        function (result) {
+          console.log(result);
+        }
+      );
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "product",
       });
       req.body.imageThumbnail = {
         public_id: result.public_id,
-        secure_url: result.secure_url
+        secure_url: result.secure_url,
+      };
+      if (req.body.title) {
+        req.body.slug = slugify(req.body.title);
       }
+      const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      res.json({ status: "Update Success", blog: updateBlog });
+    } else {
+      if (req.body.title) {
+        req.body.slug = slugify(req.body.title);
+      }
+      const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      res.json({ status: "Update Success", blog: updateBlog });
     }
-    if (req.body.title) {
-      req.body.slug = slugify(req.body.title);
-    }
-    const updateBlog = await Blog.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.json({ status: 'Update Success', blog: updateBlog })
-
   } catch (error) {
     throw new Error(error);
   }
@@ -64,7 +75,7 @@ const getBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const getBlog = await Blog.findById({ _id: id })
+    const getBlog = await Blog.findById({ _id: id });
     //   .populate("likes")
     //   .populate("dislikes");
     // const updateViews = await Blog.findByIdAndUpdate(
@@ -87,7 +98,6 @@ const getAllBlogs = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
 
 const deleteBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -248,7 +258,6 @@ const BlogPageSlug = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = {
   BlogPageSlug,

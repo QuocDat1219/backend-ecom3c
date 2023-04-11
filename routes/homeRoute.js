@@ -6,8 +6,9 @@ const {
 } = require("../controller/homeCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const router = express.Router();
+const upload = require("../utils/multer")
 
 router.get("/", getHome);
 router.post("/", creteHome);
-router.put("/:id",authMiddleware,isAdmin, updateHome);
+router.put("/",upload.single("logo"),authMiddleware,isAdmin, updateHome);
 module.exports = router;
