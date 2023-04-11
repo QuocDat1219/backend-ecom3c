@@ -14,9 +14,6 @@ var productsSchema = new mongoose.Schema(
             require: true,
             trim: true,
         },
-        price: {
-            type: Number,
-        },
         description: {
             type: Object,
         },
