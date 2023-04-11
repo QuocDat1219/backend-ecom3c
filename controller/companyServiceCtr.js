@@ -114,6 +114,7 @@ const updateCompanyService = asyncHandler(async (req, res) => {
     } else {
       req.body.imgbody1 = getdata[0].imgbody1.secure_url;
       req.body.imgbody2 = getdata[0].imgbody2.secure_url;
+      req.body.imgheader = getdata[0].imgheader.secure_url;
       const updatedCompanyService = await companyService.findByIdAndUpdate(
         getdata[0]._id,
         req.body,
