@@ -6,8 +6,9 @@ const {
 } = require("../controller/aboutUsCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const router = express.Router();
+const upload = require("../utils/multer")
 
 router.get("/", getAboutUs);
 router.post("/", creteAbout);
-router.put("/:id",authMiddleware,isAdmin, updateAboutUs);
+router.put("/",upload.any(),authMiddleware,isAdmin, updateAboutUs);
 module.exports = router;

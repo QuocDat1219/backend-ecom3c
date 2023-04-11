@@ -1,5 +1,6 @@
 const Home = require("../models/homeModel");
 const asyncHandler = require("express-async-handler");
+const cloudinary = require("../utils/cloudinarys");
 
 const getHome = asyncHandler(async (req, res) => {
   try {
@@ -18,7 +19,7 @@ const creteHome = asyncHandler(async (req, res) => {
   }
 });
 const updateHome = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const getdata = await Home.find();
 
   try {
     if (req.files != undefined) {
@@ -45,30 +46,15 @@ const updateHome = asyncHandler(async (req, res) => {
           };
           image.push(data);
         }
-        if (substring == "imgbody1") {
+        if (substring == "imgservice") {
           cloudinary.uploader.destroy(
-            getdata[0].imgbody1.public_id,
+            getdata[0].imgservice.public_id,
             function (result) {
               console.log(result);
             }
           );
           const data = {
-            imgbody1: {
-              public_id: result.public_id,
-              secure_url: result.secure_url,
-            },
-          };
-          image.push(data);
-        }
-        if (substring == "imgbody2") {
-          cloudinary.uploader.destroy(
-            getdata[0].imgbody2.public_id,
-            function (result) {
-              console.log(result);
-            }
-          );
-          const data = {
-            imgbody2: {
+            imgservice: {
               public_id: result.public_id,
               secure_url: result.secure_url,
             },
@@ -76,10 +62,49 @@ const updateHome = asyncHandler(async (req, res) => {
           image.push(data);
         }
       });
-      
-      const updatedHome = await Home.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
+
+      Promise.all(promises)
+        .then(async () => {
+          let imgheader = image.find((obj) => obj.hasOwnProperty("imgheader"));
+          let imgservice = image.find((obj) =>
+            obj.hasOwnProperty("imgservice")
+          );
+          if (imgheader == undefined)
+            imgheader = { imgheader: getdata[0].imgheader };
+          if (imgservice == undefined)
+            imgservice = { imgservice: getdata[0].imgservice };
+
+          const updatedHome = await Home.findByIdAndUpdate(
+            getdata[0]._id,
+            {
+              imgheader: imgheader.imgheader,
+              imgservice: imgservice.imgservice,
+              titleheader: req.body.titleheader,
+              titleprodcut1: req.body.titleprodcut1,
+              titleprodcut2: req.body.titleprodcut2,
+              titleservice: req.body.titleservice,
+              descriptionservice: req.body.descriptionservice,
+            },
+            {
+              new: true,
+            }
+          );
+
+          res.json({ status: "Update Success", home: updatedHome });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      const updatedHome = await Home.findByIdAndUpdate(
+        getdata[0]._id,
+
+        req.body,
+        {
+          new: true,
+        }
+      );
+
       res.json({ status: "Update Success", home: updatedHome });
     }
   } catch (error) {

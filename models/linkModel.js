@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const linkSchema = new mongoose.Schema(
     {
         
-        name: {
+        zalo: {
             type: String,
         },
         url: {
