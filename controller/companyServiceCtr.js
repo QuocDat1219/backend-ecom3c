@@ -89,9 +89,7 @@ const updateCompanyService = asyncHandler(async (req, res) => {
             imgbody1 = { imgbody1: getdata[0].imgbody1 };
           if (imgbody2 == undefined)
             imgbody2 = { imgbody2: getdata[0].imgbody2 };
-          console.log(imgheader);
-          console.log(imgbody1);
-          console.log(imgbody2);
+
           const updatedCompanyService = await companyService.findByIdAndUpdate(
             getdata[0]._id,
             {
@@ -114,6 +112,8 @@ const updateCompanyService = asyncHandler(async (req, res) => {
           console.error(error);
         });
     } else {
+      req.body.imgbody1 = getdata[0].imgbody1.secure_url;
+      req.body.imgbody2 = getdata[0].imgbody2.secure_url;
       const updatedCompanyService = await companyService.findByIdAndUpdate(
         getdata[0]._id,
         req.body,
