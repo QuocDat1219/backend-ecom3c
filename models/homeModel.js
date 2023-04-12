@@ -27,6 +27,22 @@ var homeSchema = new mongoose.Schema({
     descriptionservice : {
         type: String,
         required: true,
+    },
+    titlesanpham1 :{
+        type: String,
+        required: true,
+    },
+    descriptionsanpham1 :{
+        type: String,
+        required: true,
+    },
+    titlesanpham2 :{
+        type: String,
+        required: true,
+    },
+    descriptionsanpham2 :{
+        type: String,
+        required: true,
     }
 },
 {
