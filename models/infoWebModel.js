@@ -23,6 +23,12 @@ const InfoWebSchema = mongoose.Schema({
   zalo: {
     type: String,
   },
+  facebook: {
+    type: String,
+  },
+  gmail: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("InfoWeb", InfoWebSchema);
