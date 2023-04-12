@@ -18,21 +18,7 @@ const upload = require("../utils/multer");
 
 const router = express.Router();
 
-router.post("/", upload.array("image", 10), createProducts);
-router.post(
-  "/newimg",
-  upload.single("image"),
-  authMiddleware,
-  isAdmin,
-  updateimagedetailproduct
-);
-router.post(
-  "/updateimgdetail",
-  upload.single("image"),
-  authMiddleware,
-  isAdmin,
-  updateProductsImgDetail
-);
+router.put("/", upload.array("image", 10), createProducts);
 
 router.get("/fitercontainer", fiterCategoryContainer);
 router.get("/fitercontainerslug", fiterCategoryContainerBySlug);
