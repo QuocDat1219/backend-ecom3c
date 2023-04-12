@@ -10,5 +10,5 @@ const upload = require("../utils/multer")
 
 router.get("/", getAboutUs);
 router.post("/", creteAbout);
-router.put("/",upload.any(),authMiddleware,isAdmin, updateAboutUs);
+router.put("/",upload.any(), updateAboutUs);
 module.exports = router;

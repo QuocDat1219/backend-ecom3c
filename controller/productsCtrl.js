@@ -6,13 +6,9 @@ const categoryContainer = require("../models/categoryContainer");
 const cloudinary = require("../utils/cloudinarys");
 
 const createProducts = asyncHandler(async (req, res) => {
-
-
     try {
         let pictureFiles = req.files;
-
-
-
+        console.log(pictureFiles);
         let multiplePicturePromise = pictureFiles.map((image) =>
             cloudinary.v2.uploader.upload(image.path)
         );
