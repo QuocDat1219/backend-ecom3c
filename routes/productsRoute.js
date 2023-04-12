@@ -1,28 +1,38 @@
-const express = require('express');
+const express = require("express");
 
 const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
 const {
-    fiterCategoryContainerBySlug,
-    createProducts,
-    getAllProducts,
-    getaProducts,
-    updateProducts,
-    deleteProducts,
-    getAllProductsPage,
-    fitercategory,
-    fiterCategoryContainer,
-    updateimagedetailproduct,
-    updateProductsImgDetail
+  fiterCategoryContainerBySlug,
+  createProducts,
+  getAllProducts,
+  getaProducts,
+  updateProducts,
+  deleteProducts,
+  getAllProductsPage,
+  fitercategory,
+  fiterCategoryContainer,
+  updateimagedetailproduct,
+  updateProductsImgDetail,
 } = require("../controller/productsCtrl");
-const upload = require("../utils/multer")
+const upload = require("../utils/multer");
 
 const router = express.Router();
 
-
-router.post("/", upload.array("image", 10), authMiddleware, isAdmin, createProducts);
-router.post("/newimg", upload.single("image"), authMiddleware, isAdmin, updateimagedetailproduct);
-router.post("/updateimgdetail", upload.single("image"), authMiddleware, isAdmin, updateProductsImgDetail);
-
+router.post("/", upload.array("image", 10), createProducts);
+router.post(
+  "/newimg",
+  upload.single("image"),
+  authMiddleware,
+  isAdmin,
+  updateimagedetailproduct
+);
+router.post(
+  "/updateimgdetail",
+  upload.single("image"),
+  authMiddleware,
+  isAdmin,
+  updateProductsImgDetail
+);
 
 router.get("/fitercontainer", fiterCategoryContainer);
 router.get("/fitercontainerslug", fiterCategoryContainerBySlug);
@@ -32,7 +42,5 @@ router.get("/getall", getAllProducts);
 router.get("/:id", getaProducts);
 router.put("/:id", upload.array("image", 10), updateProducts);
 router.delete("/:id", authMiddleware, isAdmin, deleteProducts);
-
-
 
 module.exports = router;

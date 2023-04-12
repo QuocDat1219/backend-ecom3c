@@ -84,6 +84,10 @@ const updateHome = asyncHandler(async (req, res) => {
               titleprodcut2: req.body.titleprodcut2,
               titleservice: req.body.titleservice,
               descriptionservice: req.body.descriptionservice,
+              titlesanpham1: req.body.titlesanpham1,
+              descriptionsanpham1: req.body.descriptionsanpham1,
+              titlesanpham2: req.body.titlesanpham2,
+              descriptionsanpham2: req.body.descriptionsanpham2,
             },
             {
               new: true,
