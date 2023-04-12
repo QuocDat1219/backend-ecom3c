@@ -52,4 +52,4 @@ var homeSchema = new mongoose.Schema(
     },
   }
 );
-module.exports = mongoose.model("footerinfo", homeSchema);
+module.exports = mongoose.model("homeinfo", homeSchema);
