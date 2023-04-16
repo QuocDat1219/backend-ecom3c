@@ -146,7 +146,19 @@ const logout = asyncHandler(async (req, res) => {
   });
   res.sendStatus(204); // forbidden
 });
-
+//admin updateuser
+const adminUpdateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const adminUpdatedUser = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.json({ status: "Update Success", User: adminUpdatedUser });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 // Update a user
 
 const updatedUser = asyncHandler(async (req, res) => {
