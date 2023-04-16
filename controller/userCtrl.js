@@ -16,7 +16,6 @@ const sendEmail = require("./emailCtrl");
 
 var cookie = require("cookie");
 
-
 // Create a User ----------------------------------------------
 
 const createUser = asyncHandler(async (req, res) => {
@@ -199,7 +198,7 @@ const saveAddress = asyncHandler(async (req, res, next) => {
 
 const getallUser = asyncHandler(async (req, res) => {
   try {
-    const getUsers = await User.find().populate("wishlist");
+    const getUsers = await User.find();
     res.json(getUsers);
   } catch (error) {
     throw new Error(error);
