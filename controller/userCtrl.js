@@ -565,4 +565,5 @@ module.exports = {
   updateOrderStatus,
   getAllOrders,
   getOrderByUserId,
+  adminUpdateUser,
 };

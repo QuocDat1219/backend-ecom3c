@@ -24,6 +24,7 @@ const {
   getOrders,
   updateOrderStatus,
   getAllOrders,
+  adminUpdateUser,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const middlewareController = require("./middlewareController");
@@ -57,7 +58,7 @@ router.put(
   isAdmin,
   updateOrderStatus
 );
-router.put("/:id", authMiddleware, isAdmin, updatedUser);
+router.put("/:id", authMiddleware, isAdmin, adminUpdateUser);
 router.put("/edit-user", authMiddleware, updatedUser);
 router.put("/save-address", authMiddleware, saveAddress);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
