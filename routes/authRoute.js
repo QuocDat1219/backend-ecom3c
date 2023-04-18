@@ -30,6 +30,7 @@ const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const middlewareController = require("./middlewareController");
 const router = express.Router();
 router.post("/register", createUser);
+router.post("/", authMiddleware, isAdmin, createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
 
 router.put("/reset-password/:token", resetPassword);
