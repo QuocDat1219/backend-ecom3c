@@ -22,12 +22,15 @@ const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
    */
-  const email = req.body.email;
+  const { email, mobile } = req.body;
   /**
    * TODO:With the help of email find the user exists or not
    */
   const findUser = await User.findOne({ email: email });
-
+  const findUserMobi = await User.findOne({ mobile: mobile });
+  if (findUserMobi) {
+    throw new Error("Mobile Already Exists");
+  }
   if (!findUser) {
     /**
      * TODO:if user not found user create a new user
