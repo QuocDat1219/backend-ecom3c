@@ -17,6 +17,16 @@ var userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    facebookId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     mobile: {
       type: String,
       required: true,

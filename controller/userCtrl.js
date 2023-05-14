@@ -11,7 +11,7 @@ const { generateRefreshToken } = require("../config/refreshtoken");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("./emailCtrl");
-
+const axios = require("axios");
 // Cookie
 
 var cookie = require("cookie");
@@ -22,57 +22,267 @@ const createUser = asyncHandler(async (req, res) => {
   /**
    * TODO:Get the email from req.body
    */
-  const { email, mobile } = req.body;
+  const email = req.body.email;
   /**
    * TODO:With the help of email find the user exists or not
    */
   const findUser = await User.findOne({ email: email });
-  const findUserMobi = await User.findOne({ mobile: mobile });
-  if (findUserMobi) {
-    throw new Error("Mobile Already Exists");
-  }
-  if (!findUser) {
-    /**
-     * TODO:if user not found user create a new user
-     */
-    const newUser = await User.create(req.body);
-    res.json(newUser);
+  if (req.body.typeLogin == "facebook") {
+    const { accessToken } = req.body;
+    axios
+      .get(
+        `https://graph.facebook.com/me?fields=id,name,picture&access_token=${accessToken}`
+      )
+      .then(async (response) => {
+        const { id, name, picture } = response.data;
+        const names = name.split(" ");
+        const firstname = names[names.length - 1]; // First name is the last element in the array
+        const middlename = names.slice(1, names.length - 1).join(" ");
+        const lastname = names[0] + " " + middlename;
+        const existingUser = await User.findOne({ facebookId: id });
+        if (existingUser)
+          return res.status(400).json({ message: "User already exist!" });
+        const result = await User.create({
+          verified: "true",
+          facebookId: id,
+          firstname: firstname,
+          lastname: lastname,
+          // profilePicture: picture,
+        });
+
+        const token = jwt.sign(
+          {
+            id: result.id,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
+        res.status(200).json({ result, token });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ message: "Invalid access token!" });
+      });
+  } else if (req.body.googleAccessToken) {
+    const { googleAccessToken } = req.body;
+    axios
+      .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${googleAccessToken}`,
+        },
+      })
+      .then(async (response) => {
+        const firstName = response.data.given_name;
+        const lastName = response.data.family_name;
+        const email = response.data.email;
+        const picture = response.data.picture;
+        const existingUser = await User.findOne({ email });
+        if (existingUser)
+          return res.status(400).json({ message: "User already exist!" });
+        const result = await User.create({
+          verified: "true",
+          email,
+          firstname: firstName,
+          lastname: lastName,
+          profilePicture: picture,
+        });
+
+        const token = jwt.sign(
+          {
+            email: result.email,
+            id: result._id,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
+        res.status(200).json({ result, token });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ message: "Invalid access token!" });
+      });
   } else {
-    /**
-     * TODO:if user found then thow an error: User already exists
-     */
-    throw new Error("User Already Exists");
+    if (!findUser) {
+      /**
+       * TODO:if user not found user create a new user
+       */
+      console.log(req.body);
+      const newUser = await User.create(req.body);
+      res.json(newUser);
+    } else {
+      /**
+       * TODO:if user found then thow an error: User already exists
+       */
+      throw new Error("User Already Exists");
+    }
   }
 });
 
 // Login a user
 const loginUserCtrl = asyncHandler(async (req, res) => {
+  // return console.log(req.body);
   const { email, password } = req.body;
   // check if user exists or not
   const findUser = await User.findOne({ email });
-  if (findUser && (await findUser.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findUser?._id);
-    const updateuser = await User.findByIdAndUpdate(
-      findUser.id,
-      {
-        refreshToken: refreshToken,
-      },
-      { new: true }
-    );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
-    });
-    res.json({
-      _id: findUser?._id,
-      firstname: findUser?.firstname,
-      lastname: findUser?.lastname,
-      email: findUser?.email,
-      mobile: findUser?.mobile,
-      token: generateToken(findUser?._id),
-    });
+  // return console.log(req.body);
+  if (req.body.typeLogin == "facebook") {
+    const { accessToken } = req.body;
+    // const names = name.split(" ");
+    // const firstName = names[names.length - 1]; // First name is the last element in the array
+    // const middleName = names.slice(1, names.length - 1).join(" ");
+    // const lastName = names[0];
+    axios
+      .get(
+        `https://graph.facebook.com/me?fields=id,name,picture&access_token=${accessToken}`
+      )
+      .then(async (result) => {
+        console.log(result);
+        // return;
+        const { id, name, picture } = result.data;
+        const names = name.split(" ");
+        const firstname = names[names.length - 1]; // First name is the last element in the array
+        const middlename = names.slice(1, names.length - 1).join(" ");
+        const lastname = names[0] + " " + middlename;
+        const checkIdFacebook = await User.findOne({ facebookId: id });
+        // return;
+        if (!checkIdFacebook)
+          return res.status(404).json({ message: "User don't exist!" });
+        const refreshToken = await generateRefreshToken(checkIdFacebook?._id);
+        console.log("refreshToken", refreshToken);
+        console.log(checkIdFacebook.id);
+        updateuser = await User.findByIdAndUpdate(
+          checkIdFacebook.id,
+          {
+            refreshToken,
+          },
+          { new: true }
+        );
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          maxAge: 72 * 60 * 60 * 1000,
+        });
+        res.json({
+          _id: checkIdFacebook?._id,
+          facebookId: checkIdFacebook?.id,
+          firstname,
+          lastname,
+          email: checkIdFacebook?.email,
+          mobile: checkIdFacebook?.mobile,
+          token: generateToken(checkIdFacebook?._id),
+          role: checkIdFacebook?.role,
+          createdAt: checkIdFacebook?.createdAt,
+        });
+        // const token = jwt.sign(
+        //   {
+        //     email: existingUser.email,
+        //     id: existingUser._id,
+        //   },
+        //   // config.get("JWT_SECRET"),
+        //   process.env.JWT_SECRET,
+        //   { expiresIn: "1h" }
+        // );
+
+        // res.status(200).json({ result: existingUser, token });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ message: "Invalid access token!" });
+      });
+  } else if (req.body.googleAccessToken) {
+    // gogole-auth
+    const { googleAccessToken } = req.body;
+
+    axios
+      .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${googleAccessToken}`,
+        },
+      })
+      .then(async (response) => {
+        console.log(response);
+        const firstname = response.data.given_name;
+        const lastname = response.data.family_name;
+        const email = response.data.email;
+        const picture = response.data.picture;
+
+        const existingUser = await User.findOne({ email });
+        const findUserGoogle = await User.findOne({ email });
+
+        //  return console.log(findUserGoogle.id);
+
+        if (!existingUser)
+          return res.status(404).json({ message: "User don't exist!" });
+        const refreshToken = await generateRefreshToken(
+          findUserGoogle?._id,
+          "123213"
+        );
+        console.log("refreshToken", refreshToken);
+        updateuser = await User.findByIdAndUpdate(
+          findUserGoogle.id,
+          {
+            refreshToken: refreshToken,
+          },
+          { new: true }
+        );
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          maxAge: 72 * 60 * 60 * 1000,
+        });
+        res.json({
+          _id: findUserGoogle?._id,
+          firstname,
+          lastname,
+          email: findUserGoogle?.email,
+          mobile: findUserGoogle?.mobile,
+          token: generateToken(findUserGoogle?._id),
+          role: findUserGoogle?.role,
+          createdAt: findUserGoogle?.createdAt,
+        });
+        // const token = jwt.sign(
+        //   {
+        //     email: existingUser.email,
+        //     id: existingUser._id,
+        //   },
+        //   // config.get("JWT_SECRET"),
+        //   process.env.JWT_SECRET,
+        //   { expiresIn: "1h" }
+        // );
+
+        // res.status(200).json({ result: existingUser, token });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ message: "Invalid access token!" });
+      });
   } else {
-    throw new Error("Invalid Credentials");
+    if (findUser && (await findUser.isPasswordMatched(password))) {
+      const refreshToken = await generateRefreshToken(findUser?._id);
+      const updateuser = await User.findByIdAndUpdate(
+        findUser.id,
+        {
+          refreshToken: refreshToken,
+        },
+        { new: true }
+      );
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 72 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: findUser?._id,
+        firstname: findUser?.firstname,
+        lastname: findUser?.lastname,
+        email: findUser?.email,
+        mobile: findUser?.mobile,
+        token: generateToken(findUser?._id),
+        role: findUser?.role,
+        createdAt: findUser?.createdAt,
+      });
+    } else {
+      throw new Error("Invalid Credentials");
+    }
   }
 });
 
