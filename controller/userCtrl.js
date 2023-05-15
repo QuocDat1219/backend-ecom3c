@@ -129,17 +129,11 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   // return console.log(req.body);
   if (req.body.typeLogin == "facebook") {
     const { accessToken } = req.body;
-    // const names = name.split(" ");
-    // const firstName = names[names.length - 1]; // First name is the last element in the array
-    // const middleName = names.slice(1, names.length - 1).join(" ");
-    // const lastName = names[0];
     axios
       .get(
         `https://graph.facebook.com/me?fields=id,name,picture&access_token=${accessToken}`
       )
       .then(async (result) => {
-        console.log(result);
-        // return;
         const { id, name, picture } = result.data;
         const names = name.split(" ");
         const firstname = names[names.length - 1]; // First name is the last element in the array
@@ -174,17 +168,17 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
           role: checkIdFacebook?.role,
           createdAt: checkIdFacebook?.createdAt,
         });
-        // const token = jwt.sign(
-        //   {
-        //     email: existingUser.email,
-        //     id: existingUser._id,
-        //   },
-        //   // config.get("JWT_SECRET"),
-        //   process.env.JWT_SECRET,
-        //   { expiresIn: "1h" }
-        // );
+        const token = jwt.sign(
+          {
+            email: existingUser.email,
+            id: existingUser._id,
+          },
+          config.get("JWT_SECRET"),
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
 
-        // res.status(200).json({ result: existingUser, token });
+        res.status(200).json({ result: existingUser, token });
       })
       .catch((err) => {
         console.log(err);
@@ -201,7 +195,6 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         },
       })
       .then(async (response) => {
-        console.log(response);
         const firstname = response.data.given_name;
         const lastname = response.data.family_name;
         const email = response.data.email;
@@ -240,17 +233,17 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
           role: findUserGoogle?.role,
           createdAt: findUserGoogle?.createdAt,
         });
-        // const token = jwt.sign(
-        //   {
-        //     email: existingUser.email,
-        //     id: existingUser._id,
-        //   },
-        //   // config.get("JWT_SECRET"),
-        //   process.env.JWT_SECRET,
-        //   { expiresIn: "1h" }
-        // );
+        const token = jwt.sign(
+          {
+            email: existingUser.email,
+            id: existingUser._id,
+          },
+          // config.get("JWT_SECRET"),
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
 
-        // res.status(200).json({ result: existingUser, token });
+        res.json({ result: existingUser, token });
       })
       .catch((err) => {
         console.log(err);

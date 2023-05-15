@@ -14,8 +14,8 @@ var userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      required: false,
+      // unique: true,
     },
     facebookId: {
       type: String,
@@ -29,12 +29,12 @@ var userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      required: true,
-      unique: true,
+      required: false,
+      // unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     role: {
       type: String,
