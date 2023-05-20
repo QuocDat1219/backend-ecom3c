@@ -34,7 +34,11 @@ var productsSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      default: 1000000,
+      required: false,
+    },
+    quantity: {
+      type: Number,
+      required: false,
     },
     sold: {
       type: Number,
