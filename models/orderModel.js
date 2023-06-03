@@ -6,29 +6,35 @@ var orderSchema = new mongoose.Schema(
     products: [
       {
         product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          type: String,
         },
-        count: Number,
-        color: String,
+        qty: Number,
       },
     ],
-    paymentIntent: {},
+    paymentIntent: {
+      name: {
+        type: String,
+      },
+      status: {
+        type: String,
+      },
+    },
     orderStatus: {
       type: String,
-      default: "Not Processed",
+      default: "Đang xử lý",
       enum: [
-        "Not Processed",
-        "Cash on Delivery",
-        "Processing",
-        "Dispatched",
-        "Cancelled",
-        "Delivered",
+        "Đang xử lý",
+        "Đã xác nhận",
+        "Đang giao hàng",
+        "Đã hủy",
+        "Đã giao hàng",
       ],
     },
     orderby: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+    },
+    totalPrice: {
+      type: Number,
     },
   },
   {

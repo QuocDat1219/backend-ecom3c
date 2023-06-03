@@ -27,6 +27,7 @@ const contactRouter = require("./routes/contactRoute");
 const companyServiceRoute = require("./routes/companyServiceRoute");
 const aboutUsRoute = require("./routes/aboutUsRoute");
 const home = require("./routes/homeRoute");
+const orders = require("./routes/orderRouter");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -63,6 +64,7 @@ app.use("/api/contact", contactRouter);
 app.use("/api/company-service", companyServiceRoute);
 app.use("/api/home", home);
 app.use("/api/about-us", aboutUsRoute);
+app.use("/api/orders", orders);
 
 app.use(notFound);
 app.use(errorHandler);
