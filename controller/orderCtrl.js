@@ -24,7 +24,6 @@ const createOrder = asyncHandler(async (req, res) => {
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
-  console.log("Hello world");
   try {
     Orders.find().then((result) => {
       res.json(result);
@@ -65,9 +64,27 @@ const updateOrderCancel = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+const getOrderByOrderId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const order = await Orders.find({ orderby: id });
+
+    if (order) {
+      res.json(order);
+    } else {
+      res.status(404).json({ message: "Đơn hàng không tồn tại." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server." });
+  }
+});
+
 module.exports = {
   createOrder,
   getAllOrders,
   findOrders,
   updateOrderCancel,
+  getOrderByOrderId,
 };
