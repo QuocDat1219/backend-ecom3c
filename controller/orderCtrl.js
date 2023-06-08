@@ -81,10 +81,29 @@ const getOrderByOrderId = asyncHandler(async (req, res) => {
   }
 });
 
+
+const deleteOrder = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const order = await Orders.deleteOne({ _id: id });
+    res.status(200).json({
+      success: true,
+      message: `review has been deleted successfully!`,
+      order,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: "Your request could not be processed. Please try again.",
+    });
+  }
+});
+
 module.exports = {
   createOrder,
   getAllOrders,
   findOrders,
   updateOrderCancel,
   getOrderByOrderId,
+  deleteOrder,
 };
