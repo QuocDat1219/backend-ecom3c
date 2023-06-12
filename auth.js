@@ -14,7 +14,7 @@ module.exports = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://ecom-oto.vercel.app/auth/google/callback",
+        callbackURL: "http://localhost:5000/auth/google/callback",
       },
       function (accessToken, refreshToken, profile, cb) {
         console.log(accessToken);

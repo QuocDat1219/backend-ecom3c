@@ -41,7 +41,7 @@ const createUser = asyncHandler(async (req, res) => {
         const lastname = names[0] + " " + middlename;
         const existingUser = await User.findOne({ facebookId: id });
         if (existingUser)
-          return res.status(400).json({ message: "Người dùng đã tồn tại!" });
+          return res.status(400).json({ message: "User already exist!" });
         const result = await User.create({
           verified: "true",
           facebookId: id,
@@ -62,7 +62,7 @@ const createUser = asyncHandler(async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).json({ message: "Mã thông báo truy cập không hợp lệ!" });
+        res.status(400).json({ message: "Invalid access token!" });
       });
   } else if (req.body.googleAccessToken) {
     const { googleAccessToken } = req.body;
@@ -79,7 +79,7 @@ const createUser = asyncHandler(async (req, res) => {
         const picture = response.data.picture;
         const existingUser = await User.findOne({ email });
         if (existingUser)
-          return res.status(400).json({ message: "Người dùng đã tồn tại!" });
+          return res.status(400).json({ message: "User already exist!" });
         const result = await User.create({
           verified: "true",
           email,
@@ -115,7 +115,7 @@ const createUser = asyncHandler(async (req, res) => {
       /**
        * TODO:if user found then thow an error: User already exists
        */
-      throw new Error("Người dùng đã tồn tại");
+      throw new Error("User Already Exists");
     }
   }
 });
@@ -142,7 +142,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         const checkIdFacebook = await User.findOne({ facebookId: id });
         // return;
         if (!checkIdFacebook)
-          return res.status(404).json({ message: "Truy cập thông báo mã không hợp lệ!" });
+          return res.status(404).json({ message: "User don't exist!" });
         const refreshToken = await generateRefreshToken(checkIdFacebook?._id);
         console.log("refreshToken", refreshToken);
         console.log(checkIdFacebook.id);
@@ -166,6 +166,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
           mobile: checkIdFacebook?.mobile,
           token: generateToken(checkIdFacebook?._id),
           role: checkIdFacebook?.role,
+          isBlocked,
           createdAt: checkIdFacebook?.createdAt,
         });
         const token = jwt.sign(
@@ -182,7 +183,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).json({ message: "Mã thông báo truy cập không hợp lệ!" });
+        res.status(400).json({ message: "Invalid access token!" });
       });
   } else if (req.body.googleAccessToken) {
     // gogole-auth
@@ -206,7 +207,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         //  return console.log(findUserGoogle.id);
 
         if (!existingUser)
-          return res.status(404).json({ message: "Người dùng không tồn tại!" });
+          return res.status(404).json({ message: "User don't exist!" });
         const refreshToken = await generateRefreshToken(
           findUserGoogle?._id,
           "123213"
@@ -231,6 +232,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
           mobile: findUserGoogle?.mobile,
           token: generateToken(findUserGoogle?._id),
           role: findUserGoogle?.role,
+          isBlocked,
           createdAt: findUserGoogle?.createdAt,
         });
         const token = jwt.sign(
@@ -271,6 +273,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         mobile: findUser?.mobile,
         token: generateToken(findUser?._id),
         role: findUser?.role,
+        isBlocked: findUser?.isBlocked,
         createdAt: findUser?.createdAt,
       });
     } else {
