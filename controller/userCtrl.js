@@ -518,7 +518,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-    const resetURL = `Để lấy lại mật khẩu cho tài khoản của bạn, hãy chọn vào liên kết sau. <a href="http://localhost:3000/changepassword/${token}" style="text-decoration: none; padding: 10px 20px; background-color: #007bff; color: #fff; border-radius: 5px;">Đặt lại mật khẩu</a>`;
+    const resetURL = `Để lấy lại mật khẩu cho tài khoản của bạn, hãy chọn vào liên kết sau. <a href="https://sacotodien.vercel.app/changepassword/${token}" style="text-decoration: none; padding: 10px 20px; background-color: #007bff; color: #fff; border-radius: 5px;">Đặt lại mật khẩu</a>`;
     const data = {
       to: email,
       text: "Xin chào!",
