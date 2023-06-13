@@ -200,7 +200,6 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         const lastname = response.data.family_name;
         const email = response.data.email;
         const picture = response.data.picture;
-
         const existingUser = await User.findOne({ email });
         const findUserGoogle = await User.findOne({ email });
 
